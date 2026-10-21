@@ -13,7 +13,11 @@ RUN apt-get update \
     tini \
   && rm -rf /var/lib/apt/lists/*
 
-RUN npm install -g openclaw@latest clawhub@latest
+# Holy View TV: exact versions, so a rebuild or restart never upgrades the bot by surprise (a rebuild on Oct 21 2026
+# jumped 2026.10.2 -> 2026.10.5 and dropped the WhatsApp login). To upgrade: change these, test, then redeploy.
+ARG OPENCLAW_VERSION=2026.10.5
+ARG CLAWHUB_VERSION=0.23.3
+RUN npm install -g openclaw@${OPENCLAW_VERSION} clawhub@${CLAWHUB_VERSION}
 
 # Backward-compatibility shim for older OPENCLAW_ENTRY values.
 RUN mkdir -p /openclaw \
